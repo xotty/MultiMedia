@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_navigation_matrix"
+        android:icon="@null"
+        android:title="Matrix" />
+n
+    <item
+        android:id="@+id/bottom_navigation_rgba"
+        android:title="RGBA" />
+
+    <item
+        android:id="@+id/bottom_navigation_hsl"
+        android:title="H/S/L" />
+
+    <item
+        android:id="@+id/bottom_navigation_filter"
+        android:title="Filter" />
+</menu>

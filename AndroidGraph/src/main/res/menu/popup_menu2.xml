@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/compress"
+        android:title="质量压缩">
+    </item>
+    <item
+        android:id="@+id/sampling"
+        android:title="采样压缩" />
+    <item
+        android:id="@+id/matrix"
+        android:title="缩放压缩" />
+    <item
+        android:id="@+id/rgb565"
+        android:title="RGB565" />
+    <item
+        android:id="@+id/scalebmp"
+        android:title="强制压缩" />
+</menu>
