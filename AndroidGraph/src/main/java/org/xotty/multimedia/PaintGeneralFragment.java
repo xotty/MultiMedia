@@ -22,6 +22,7 @@ import android.graphics.Path;
 import android.graphics.PathDashPathEffect;
 import android.graphics.SumPathEffect;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class PaintGeneralFragment extends Fragment {
 
@@ -44,6 +46,7 @@ public class PaintGeneralFragment extends Fragment {
                              Bundle savedInstanceState) {
         nestedScrollView = (NestedScrollView) inflater.inflate(R.layout.fragment_createbmp, container, false);
         root = (LinearLayout) nestedScrollView.findViewById(R.id.rt);
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, 1000);
         MyView myView1 = new MyView(getContext(), 1);

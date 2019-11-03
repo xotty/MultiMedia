@@ -17,4 +17,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="TitleSize">
+        <item name="android:textSize">8sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
 </resources>

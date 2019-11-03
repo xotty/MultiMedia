@@ -115,6 +115,9 @@ public class CM_Filter_Fragment extends Fragment {
         filters.add(MyColorFilter.colormatrix_huguang);
         filterTags.add("湖光");
 
+        filters.add(new PorterDuffColorFilter(filterColor, PorterDuff.Mode.CLEAR));
+        filterTags.add("");
+
         //mul：0xRRGGBB，其中00为去色，ff为原样不变
         //add：0xRRGGBB，其中00为原样不变，其它为加深颜色
         filters.add(new LightingColorFilter(0x00ff00, 0x000000));
@@ -122,11 +125,12 @@ public class CM_Filter_Fragment extends Fragment {
         filters.add(new LightingColorFilter(0xffffff, 0x0000f0));
         filterTags.add("蓝色加深");
 
-        //filterColor作为SRC，imageView作为DST，进行混色
         filters.add(new PorterDuffColorFilter(filterColor, PorterDuff.Mode.CLEAR));
-        filterTags.add("Mode.CLEAR");
-        filters.add(new PorterDuffColorFilter(filterColor, PorterDuff.Mode.XOR));
-        filterTags.add("Mode.XOR");
+        filterTags.add("");
+
+        //filterColor作为SRC，imageView作为DST，进行混色
+
+
 
         filters.add(new PorterDuffColorFilter(filterColor, PorterDuff.Mode.ADD));
         filterTags.add("Mode.ADD");
@@ -152,7 +156,8 @@ public class CM_Filter_Fragment extends Fragment {
         filterTags.add("Mode.S_OVER");
         filters.add(new PorterDuffColorFilter(filterColor, PorterDuff.Mode.SRC_ATOP));
         filterTags.add("Mode.S_ATOP");
-
+        filters.add(new PorterDuffColorFilter(filterColor, PorterDuff.Mode.CLEAR));
+        filterTags.add("Mode.CLEAR");
         //呈现DST为主的图像
         filters.add(new PorterDuffColorFilter(filterColor, PorterDuff.Mode.DST));
         filterTags.add("Mode.DST");
@@ -164,6 +169,12 @@ public class CM_Filter_Fragment extends Fragment {
         filterTags.add("Mode.D_OVER");
         filters.add(new PorterDuffColorFilter(filterColor, PorterDuff.Mode.DST_ATOP));
         filterTags.add("Mode.D_ATOP");
+
+        filters.add(new PorterDuffColorFilter(filterColor, PorterDuff.Mode.XOR));
+        filterTags.add("Mode.XOR");
+
+        filters.add(new PorterDuffColorFilter(filterColor, PorterDuff.Mode.CLEAR));
+        filterTags.add("");
     }
 
 

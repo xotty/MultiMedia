@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:scaleType="fitCenter"
+        android:layerType="software"
         android:src="@drawable/mgirl"/>
     <TextView
         android:id="@+id/tv"
@@ -15,6 +16,6 @@
         android:layout_height="35dp"
         android:textColor="@color/colorAccent"
         android:textAlignment="center"
-        android:textSize="15sp"
+        android:textSize="12sp"
         android:text="黑白"/>
 </LinearLayout>

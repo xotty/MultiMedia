@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +36,8 @@ public class PaintColorMatrixFragment extends Fragment {
       rootView = localInflater.inflate(R.layout.fragment_paint_colormatrix,
                 container, false);
 
-     navigation = (BottomNavigationView) rootView.findViewById(R.id.bottom_navigation);
+        navigation = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
+        Log.i("TAG", "BottomNavigationView: "+navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         // If BottomNavigationView has more than 3 items, using reflection to disable shift mode
