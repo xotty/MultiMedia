@@ -6,6 +6,8 @@
  */
 package org.xotty.multimedia;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.LightingColorFilter;
@@ -15,6 +17,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CM_Filter_Fragment extends Fragment {
-    private static final int colorMatrixColorFilterNumber = 29;
+    private static final int ColorMatrixColorFilterNumber = 29;
+    private static final int LightenFilterNumber = 2;
+    private static final int PorterDuffFilterNumber = 18;
     RecyclerView recyclerView;
     FiltersAdapter filtersAdapter;
     //存放各种滤镜
@@ -175,6 +180,7 @@ public class CM_Filter_Fragment extends Fragment {
 
         filters.add(new PorterDuffColorFilter(filterColor, PorterDuff.Mode.CLEAR));
         filterTags.add("");
+
     }
 
 
@@ -207,13 +213,16 @@ public class CM_Filter_Fragment extends Fragment {
         //定义RecycleView的内容
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
+            Bitmap bmp= BitmapFactory.decodeResource(getResources(), R.drawable.image_placeholder);
+
             //对ImageView施加滤镜
-            if (position < colorMatrixColorFilterNumber) {
+            if (position < ColorMatrixColorFilterNumber) {
                 MyColorFilter.imageViewColorFilter(holder.imageView, (float[]) filters.get(position));
-            } else {
+            } else  {
                 MyColorFilter.imageViewColorFilter(holder.imageView, (ColorFilter) filters.get(position));
             }
             holder.textView.setText(filterTags.get(position));
+
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
@@ -226,6 +235,5 @@ public class CM_Filter_Fragment extends Fragment {
                 textView = (TextView) view.findViewById(R.id.tv);
             }
         }
-
     }
 }

@@ -23,14 +23,7 @@ public class BitmapDrawActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//          setContentView(R.layout.fragment_paint_colormatrix);
-//        setContentView(new MyBitmapView(this));
-        setContentView(R.layout.activity_test);
-        CM_Filter_Fragment fragment1=new CM_Filter_Fragment();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.containertest, fragment1)
-                .commit();
-
+        setContentView(new MyBitmapView(this));
     }
 
     private static class MyBitmapView extends View {

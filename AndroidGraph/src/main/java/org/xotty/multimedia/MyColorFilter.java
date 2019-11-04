@@ -1,12 +1,15 @@
 package org.xotty.multimedia;
 
 import android.graphics.Bitmap;
+import android.graphics.MaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 public class MyColorFilter {
@@ -98,6 +101,31 @@ public class MyColorFilter {
         return filteredBitmap;
     }
 
+    //给ImageView上遮罩滤镜
+    public static void imageViewMaskFilter(ImageView imageView, MaskFilter maskFilter) {
+        BitmapDrawable drawable=(BitmapDrawable)imageView.getDrawable();
+        Bitmap srcBitmap=drawable.getBitmap();
+        Bitmap dst=setMaskFilter(srcBitmap,maskFilter,false);
+        imageView.setImageBitmap(dst);
+    }
+
+    //给Bitmap上遮罩滤镜
+    public static Bitmap setMaskFilter(Bitmap bitmap, MaskFilter maskFilter, boolean isRecycle) {
+        Bitmap filteredBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setMaskFilter(maskFilter);
+        Canvas canvas = new Canvas(filteredBitmap);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
+        if (isRecycle)
+            if (bitmap != null) {
+                if (bitmap != null && !bitmap.isRecycled()) {
+                    bitmap.recycle();
+                }
+                bitmap = null;
+            }
+        return filteredBitmap;
+    }
 
     // 黑白
     public static final float colormatrix_heibai[] = {0.8f, 1.6f, 0.2f, 0,

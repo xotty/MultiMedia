@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PaintActivity extends AppCompatActivity {
-    boolean isFistVisible=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,14 +71,14 @@ public class PaintActivity extends AppCompatActivity {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(new PaintGeneralFragment());
         fragments.add(new PaintColorMatrixFragment());
-        fragments.add(new PaintXffermodeFragment());
+        fragments.add(new PaintXfermodeFragment());
         fragments.add(new PaintShadowFragment());
         fragments.add(new PaintShaderFragment());
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.view_pager_main);
         FragmentAdapter mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), fragments, titles);
         mViewPager.setAdapter(mFragmentAdapter);
-        mViewPager.setOffscreenPageLimit(0);
+        mViewPager.setOffscreenPageLimit(3);
 
         mTabLayout.setupWithViewPager(mViewPager);
     }

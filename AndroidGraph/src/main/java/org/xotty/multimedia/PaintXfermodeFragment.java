@@ -31,12 +31,12 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 
-public class PaintXffermodeFragment extends Fragment {
+public class PaintXfermodeFragment extends Fragment {
 
     NestedScrollView nestedScrollView;
     LinearLayout root;
 
-    public PaintXffermodeFragment() {
+    public PaintXfermodeFragment() {
     }
 
     // DST，圆
