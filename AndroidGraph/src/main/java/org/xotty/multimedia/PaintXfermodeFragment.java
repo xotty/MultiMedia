@@ -23,13 +23,14 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.graphics.Xfermode;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
+
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
 
 public class PaintXfermodeFragment extends Fragment {
 

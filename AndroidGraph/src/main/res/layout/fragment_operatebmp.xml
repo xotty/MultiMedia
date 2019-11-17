@@ -4,7 +4,7 @@
 <!--    android:layout_width="match_parent"-->
 <!--    android:layout_height="match_parent"-->
 <!--    tools:context=".OperateBmpFragment">-->
-<android.support.v4.widget.NestedScrollView
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sr"
@@ -63,7 +63,7 @@
             android:textColor="@android:color/holo_red_dark"
             android:lines="3"
             android:textSize="15sp"/>
-        <android.support.v4.widget.ContentLoadingProgressBar
+        <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/pbar"
             style="@style/Widget.AppCompat.ProgressBar"
             android:layout_width="wrap_content"
@@ -79,5 +79,5 @@
             android:contentDescription="Sample Image1" />
 
     </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>
 <!--</FrameLayout>-->

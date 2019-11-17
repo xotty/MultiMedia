@@ -9,30 +9,33 @@ package org.xotty.multimedia;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
-public class CM_HSL_Fragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
+import androidx.fragment.app.Fragment;
 
-    ImageView imageView;
-    SeekBar seekBarHue, seekBarSaturation, seekBarLightness;
-    ColorMatrix colorMatrix = new ColorMatrix();
-    ColorMatrix mHueMatrix = new ColorMatrix();
-    ColorMatrix mSaturationMatrix = new ColorMatrix();
-    ColorMatrix mLightnessMatrix = new ColorMatrix();
+public class CF_HSL_Fragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
 
-    public CM_HSL_Fragment() {
+    private ImageView imageView;
+    private SeekBar seekBarHue;
+    private SeekBar seekBarSaturation;
+    private SeekBar seekBarLightness;
+    private ColorMatrix colorMatrix = new ColorMatrix();
+    private ColorMatrix mHueMatrix = new ColorMatrix();
+    private ColorMatrix mSaturationMatrix = new ColorMatrix();
+    private ColorMatrix mLightnessMatrix = new ColorMatrix();
+
+    public CF_HSL_Fragment() {
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_cm_hsl,
+        View rootView = inflater.inflate(R.layout.fragment_cf_hsl,
                 container, false);
         imageView = (ImageView) rootView.findViewById(R.id.imageView);
         seekBarHue = (SeekBar) rootView.findViewById(R.id.bar_hue);

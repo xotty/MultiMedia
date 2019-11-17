@@ -18,7 +18,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.LayoutInflater;
@@ -30,7 +30,7 @@ import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 
-public class CM_Matrix_Fragment extends Fragment {
+public class CF_Matrix_Fragment extends Fragment {
     private ImageView mImageView;
     private GridLayout mGridLayout;
     private Bitmap bitmap;
@@ -38,13 +38,13 @@ public class CM_Matrix_Fragment extends Fragment {
     private EditText[] mEditTexts = new EditText[20];
     private float[] mColorMatrix = new float[20];
 
-    public CM_Matrix_Fragment() {
+    public CF_Matrix_Fragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_cm_matrix,
+        View rootView = inflater.inflate(R.layout.fragment_cf_matrix,
                 container, false);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.scene);
         mImageView = (ImageView) rootView.findViewById(R.id.imageview);

@@ -14,10 +14,9 @@ import android.graphics.LightingColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,27 +26,27 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CM_Filter_Fragment extends Fragment {
+public class CF_Filter_Fragment extends Fragment {
     private static final int ColorMatrixColorFilterNumber = 29;
     private static final int LightenFilterNumber = 2;
     private static final int PorterDuffFilterNumber = 18;
-    RecyclerView recyclerView;
-    FiltersAdapter filtersAdapter;
+    private RecyclerView recyclerView;
+    private FiltersAdapter filtersAdapter;
     //存放各种滤镜
     private List filters = new ArrayList<>();
 
     //存放对应的滤镜名称
     private List<String> filterTags = new ArrayList<>();
 
-    public CM_Filter_Fragment() {
+    public CF_Filter_Fragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_cm_filter,
+        View rootView = inflater.inflate(R.layout.fragment_cf_filter,
                 container, false);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.mRecyclerView);
+        recyclerView = rootView.findViewById(R.id.mRecyclerView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
         inItFilters();
@@ -189,7 +188,7 @@ public class CM_Filter_Fragment extends Fragment {
         private List filters;
         private List<String> filterTags;
 
-        public FiltersAdapter(LayoutInflater mInflater, List filters, List<String> filterTags) {
+        FiltersAdapter(LayoutInflater mInflater, List filters, List<String> filterTags) {
             this.mInflater = mInflater;
             this.filters = filters;
             this.filterTags = filterTags;
@@ -229,10 +228,10 @@ public class CM_Filter_Fragment extends Fragment {
             ImageView imageView;
             TextView textView;
 
-            public MyViewHolder(View view) {
+            MyViewHolder(View view) {
                 super(view);
-                imageView = (ImageView) view.findViewById(R.id.img);
-                textView = (TextView) view.findViewById(R.id.tv);
+                imageView = view.findViewById(R.id.img);
+                textView = view.findViewById(R.id.tv);
             }
         }
     }

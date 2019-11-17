@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_navigation_bitmap"
+        android:title="Bitmap" />
+    <item
+        android:id="@+id/bottom_navigation_linear"
+        android:title="Linear" />
+n
+    <item
+        android:id="@+id/bottom_navigation_radial"
+        android:title="Redial" />
+
+    <item
+        android:id="@+id/bottom_navigation_sweep"
+        android:title="Sweep" />
+
+    <item
+        android:id="@+id/bottom_navigation_compose"
+        android:title="Compose" />
+</menu>

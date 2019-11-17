@@ -7,7 +7,7 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,32 +16,35 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 
-public class CM_RGBA_Fragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
+public class CF_RGBA_Fragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
 
-    ImageView imageView;
-    SeekBar seekBarR, seekBarG, seekBarB, seekBarA;
-    ColorMatrix colorMatrix;
-    View colorView;
-    TextView colorText;
+    private ImageView imageView;
+    private SeekBar seekBarR;
+    private SeekBar seekBarG;
+    private SeekBar seekBarB;
+    private SeekBar seekBarA;
+    private ColorMatrix colorMatrix;
+    private View colorView;
+    private TextView colorText;
 
-    public CM_RGBA_Fragment() {
+    public CF_RGBA_Fragment() {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_cm_rgba,
+        View rootView = inflater.inflate(R.layout.fragment_cf_rgba,
                 container, false);
         colorMatrix = new ColorMatrix();
 
-        imageView = (ImageView) rootView.findViewById(R.id.imageView);
-        seekBarR = (SeekBar) rootView.findViewById(R.id.bar_R);
-        seekBarG = (SeekBar) rootView.findViewById(R.id.bar_G);
-        seekBarB = (SeekBar) rootView.findViewById(R.id.bar_B);
-        seekBarA = (SeekBar) rootView.findViewById(R.id.bar_A);
+        imageView = rootView.findViewById(R.id.imageView);
+        seekBarR = rootView.findViewById(R.id.bar_R);
+        seekBarG = rootView.findViewById(R.id.bar_G);
+        seekBarB = rootView.findViewById(R.id.bar_B);
+        seekBarA = rootView.findViewById(R.id.bar_A);
         colorView = rootView.findViewById(R.id.color_view);
-        colorText = (TextView) rootView.findViewById(R.id.color_text);
+        colorText = rootView.findViewById(R.id.color_text);
 
         seekBarR.setOnSeekBarChangeListener(this);
         seekBarG.setOnSeekBarChangeListener(this);

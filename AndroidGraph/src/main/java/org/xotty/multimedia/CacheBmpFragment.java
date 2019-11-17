@@ -37,15 +37,17 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
-import android.support.v4.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.collection.LruCache;
+import androidx.fragment.app.Fragment;
+
 import com.jakewharton.disklrucache.DiskLruCache;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -61,12 +63,13 @@ import java.security.NoSuchAlgorithmException;
 
 public class CacheBmpFragment extends Fragment {
 
-    public static final String IMG_URL = "http://seopic.699pic.com/photo/50130/6536.jpg_wh1200.jpg";
+    private static final String IMG_URL = "http://seopic.699pic.com/photo/50130/6536.jpg_wh1200.jpg";
     private static final int DISK_CACHE_SIZE = 1024 * 1024 * 100; // 100MB
     private static final int IO_BUFFER_SIZE = 1024 * 8;
-    LruCache<String, Bitmap> mMemoryCache;
-    ImageView mImageView, dImageView;
-    Handler mHandler;
+    private LruCache<String, Bitmap> mMemoryCache;
+    private ImageView mImageView;
+    private ImageView dImageView;
+    private Handler mHandler;
     private DiskLruCache mDiskCache;
 
     public CacheBmpFragment() {
@@ -78,7 +81,6 @@ public class CacheBmpFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_canchebmp, container, false);
         mImageView = view.findViewById(R.id.iv1);
         dImageView = view.findViewById(R.id.iv2);
-
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         // 缓存大小通常为APP可用内存的八分之一
         final int cacheSize = maxMemory / 8;
@@ -160,7 +162,6 @@ public class CacheBmpFragment extends Fragment {
     private void loadBitmapFromMemoryCache(int resId, ImageView imageView) {
         //key设为图片资源的ID号
         final String imageKey = String.valueOf(resId);
-
         final Bitmap bitmap = getBitmapFromMemoryCache(imageKey);
         if (bitmap != null) {
             imageView.setImageBitmap(bitmap);
@@ -188,7 +189,7 @@ public class CacheBmpFragment extends Fragment {
     class BitmapWorkTask extends AsyncTask<Integer, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
 
-        public BitmapWorkTask(ImageView imageView) {
+        BitmapWorkTask(ImageView imageView) {
             imageViewReference = new WeakReference<ImageView>(imageView);
         }
 
@@ -213,9 +214,10 @@ public class CacheBmpFragment extends Fragment {
         }
     }
 
+
     //取样解码原始图片
-    public Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
-                                                  int reqWidth, int reqHeight) {
+    private Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+                                                   int reqWidth, int reqHeight) {
 
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
@@ -246,11 +248,13 @@ public class CacheBmpFragment extends Fragment {
                 inSampleSize *= 2;
             }
         }
+
         return inSampleSize;
     }
 
+
     //从磁盘缓存冲获取图片并显示
-    public void loadBitmapFromDiskCache(final String imgUrl, ImageView imageView) {
+    private void loadBitmapFromDiskCache(final String imgUrl, ImageView imageView) {
 
         final String key = hashKeyForDisk(imgUrl);
         final Bitmap bitmap = getBitmapFromDiskCache(key);
@@ -324,7 +328,7 @@ public class CacheBmpFragment extends Fragment {
         return null;
     }
 
-    public boolean writeUrlBitmapToDiskCache(String imgUrl){
+    private boolean writeUrlBitmapToDiskCache(String imgUrl){
         boolean result;
         String key = hashKeyForDisk(imgUrl);
         try {

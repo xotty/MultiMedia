@@ -27,8 +27,8 @@ import android.graphics.Region;
 import android.graphics.RegionIterator;
 import android.os.Bundle;
 
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -139,6 +139,7 @@ public class PlotActivity extends AppCompatActivity {
             super(context);
             m_context = context;
         }
+
 
         //重写OnDraw（）函数，在每次重绘时自主实现绘图
         @Override

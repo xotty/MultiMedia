@@ -3,26 +3,22 @@ package org.xotty.multimedia;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
+import androidx.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PaintColorMatrixFragment extends Fragment {
+public class PaintColorFilterFragment extends Fragment {
 
-    BottomNavigationView navigation;
-    View rootView;
-    public PaintColorMatrixFragment() {
-        // Required empty public constructor
+    public PaintColorFilterFragment() {
     }
 
 
@@ -33,18 +29,17 @@ public class PaintColorMatrixFragment extends Fragment {
                 getActivity(), R.style.AppTheme_NoActionBar);
         LayoutInflater localInflater = inflater
                 .cloneInContext(contextThemeWrapper);
-      rootView = localInflater.inflate(R.layout.fragment_paint_colormatrix,
+        View  rootView = localInflater.inflate(R.layout.fragment_paint_colorfilter,
                 container, false);
 
-        navigation = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
+        BottomNavigationView navigation = (BottomNavigationView) getActivity().findViewById(R.id.bottom_navigation);
         Log.i("TAG", "BottomNavigationView: "+navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.inflateMenu(R.menu.menu_paint_colorfilter);
 
-        // If BottomNavigationView has more than 3 items, using reflection to disable shift mode
-//        disableShiftMode(navigation);
         navigation.setSelectedItemId(0);
         navigation.setItemIconSize(1);
-        CM_Matrix_Fragment fragment1 = new CM_Matrix_Fragment();
+        CF_Matrix_Fragment fragment1 = new CF_Matrix_Fragment();
         getChildFragmentManager().beginTransaction()
                 .add(R.id.container, fragment1).commit();
         return rootView;
@@ -57,22 +52,22 @@ public class PaintColorMatrixFragment extends Fragment {
             switch (item.getItemId()) {
                 case R.id.bottom_navigation_matrix:
 
-                    CM_Matrix_Fragment fragment1 = new CM_Matrix_Fragment();
+                    CF_Matrix_Fragment fragment1 = new CF_Matrix_Fragment();
                     getChildFragmentManager().beginTransaction()
                             .replace(R.id.container, fragment1).commit();
                     return true;
                 case R.id.bottom_navigation_rgba:
-                    CM_RGBA_Fragment fragment2 = new CM_RGBA_Fragment();
+                    CF_RGBA_Fragment fragment2 = new CF_RGBA_Fragment();
                     getChildFragmentManager().beginTransaction()
                             .replace(R.id.container, fragment2).commit();
                     return true;
                 case R.id.bottom_navigation_hsl:
-                    CM_HSL_Fragment fragment3 = new CM_HSL_Fragment();
+                    CF_HSL_Fragment fragment3 = new CF_HSL_Fragment();
                     getChildFragmentManager().beginTransaction()
                             .replace(R.id.container, fragment3).commit();
                     return true;
                 case R.id.bottom_navigation_filter:
-                    CM_Filter_Fragment fragment4 = new CM_Filter_Fragment();
+                    CF_Filter_Fragment fragment4 = new CF_Filter_Fragment();
                     getChildFragmentManager().beginTransaction()
                             .replace(R.id.container, fragment4).commit();
                     return true;
