@@ -3,6 +3,7 @@ package org.xotty.multimedia;
 import android.app.LauncherActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,14 +69,29 @@ public class MainActivity extends LauncherActivity {
                 return convertView;
             }
         };
-
+        Log.i("TAG", "onCreate: 1");
         setListAdapter(adapter);
     }
 
-        //将clazzs数组直接放入，系统将按顺序对应listview上的每一行，行点击后将跳转相应Intent的Activity
-        @Override
-        public Intent intentForPosition ( int position){
-            return new Intent(MainActivity.this, clazzs[position]);
-        }
+    //将clazzs数组直接放入，系统将按顺序对应listview上的每一行，行点击后将跳转相应Intent的Activity
+    @Override
+    public Intent intentForPosition(int position) {
+        return new Intent(MainActivity.this, clazzs[position]);
     }
+}
 
+
+//package org.xotty.multimedia;
+//import android.os.Bundle;
+//
+//import androidx.appcompat.app.AppCompatActivity;
+//
+//
+//public class MainActivity extends AppCompatActivity {
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//    }
+//}

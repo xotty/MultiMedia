@@ -15,7 +15,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.SweepGradient;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +22,15 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import androidx.fragment.app.Fragment;
+
 public class Shader_SweepGradient_Fragment extends Fragment {
-    private int viewWidth = 500;
+
     private int viewHeight = 570;
+    private int viewWidth = 500;
+    public void setViewWidth(int viewWidth) {
+        this.viewWidth = viewWidth;
+    }
 
     public Shader_SweepGradient_Fragment() {
     }
@@ -56,21 +61,20 @@ public class Shader_SweepGradient_Fragment extends Fragment {
         leftFrame0.addView(mySweepShaderView, param0);
         mySweepShaderView = new SweepShaderView(getContext(), 1);
         rightFrame0.addView(mySweepShaderView, param0);
-        root.addView(items0);
+        LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        param1.topMargin = 50;
+        root.addView(items0,param1);
 
         //添加多色渲染图
         LinearLayout items1 = (LinearLayout) localInflater.inflate(R.layout.fragment_shader_item, container, false);
         FrameLayout leftFrame1 = items1.findViewById(R.id.frameLeft);
         FrameLayout rightFrame1 = items1.findViewById(R.id.frameRight);
         mySweepShaderView = new SweepShaderView(getContext(), 2);
-        LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(viewWidth, viewHeight);
-        leftFrame1.addView(mySweepShaderView, param1);
+        leftFrame1.addView(mySweepShaderView, param0);
         mySweepShaderView = new SweepShaderView(getContext(), 3);
-        rightFrame1.addView(mySweepShaderView, param1);
-        LinearLayout.LayoutParams param2 = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        param2.topMargin = 50;
-        root.addView(items1, param2);
+        rightFrame1.addView(mySweepShaderView, param0);
+      root.addView(items1, param1);
 
         return root;
     }
@@ -135,7 +139,7 @@ public class Shader_SweepGradient_Fragment extends Fragment {
             if (tileMode % 2 == 0)
                 canvas.drawRect(0, 0, rectWidth, rectHeight, mPaint);
             else
-                canvas.drawCircle(rectWidth / 2, rectHeight / 2, rectHeight / 2, mPaint);
+                canvas.drawCircle(rectWidth / 2, rectHeight / 2, Math.min(rectHeight,rectWidth) / 2, mPaint);
 
             canvas.drawText(modeTag, getWidth() / 2, getHeight() - 30, xPaint);
         }
