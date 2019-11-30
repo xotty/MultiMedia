@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".OperateBmpFragment">-->
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -58,10 +53,8 @@
         <TextView
             android:id="@+id/tv"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:textColor="@android:color/holo_red_dark"
-            android:lines="3"
             android:textSize="15sp"/>
         <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/pbar"
@@ -80,4 +73,3 @@
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
-<!--</FrameLayout>-->

@@ -2,11 +2,13 @@ package org.xotty.multimedia;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class DrawableDrawActivity extends AppCompatActivity {
     CustomDrawableView mCustomDrawableView;
@@ -29,7 +31,11 @@ public class DrawableDrawActivity extends AppCompatActivity {
             int width = 800;
             int height = 200;
             mDrawable = new ShapeDrawable(new OvalShape());
-            mDrawable.getPaint().setColor(0xff74AC23);
+
+            //设置drawable绘制的颜色
+            mDrawable.getPaint().setColor(Color.GREEN);
+
+            //设置drawable绘制的位置
             mDrawable.setBounds(x, y, x + width, y + height);
         }
         @Override

@@ -1,8 +1,9 @@
-/**演示位图的几种常见操作：
+/**
+ * 演示位图的几种常见操作：
  * 1）将视图转换为Bitmap：当前屏幕完全可见、部分可见、完全不可见的视图
  * 2）压缩和保存
  * 3）变换：平移、旋转、缩放、斜切
- * */
+ */
 package org.xotty.multimedia;
 
 import android.graphics.Bitmap;
@@ -14,9 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import androidx.fragment.app.Fragment;
-import androidx.core.widget.ContentLoadingProgressBar;
-import androidx.core.widget.NestedScrollView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,6 +26,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+
+import androidx.core.widget.ContentLoadingProgressBar;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -37,20 +40,15 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 
 public class OperateBmpFragment extends Fragment {
-    NestedScrollView nestedScrollView;
-    LinearLayout fragmentLayout;
-    File filePath;
-    String title = "";
-    TextView tv;
-    ImageView iv;
-    int srcSize, dstSize, srcFileSize, dstFileSize;
-    Bitmap srcBmp, dstBitmap;
-    ContentLoadingProgressBar bar;
-    boolean isBT1Pressed;
-
-    public OperateBmpFragment() {
-    }
-
+    private NestedScrollView nestedScrollView;
+    private LinearLayout fragmentLayout;
+    private File filePath;
+    private String title = "";
+    private TextView tv;
+    private ImageView iv;
+    private int srcSize, dstSize, srcFileSize, dstFileSize;
+    private Bitmap srcBmp, dstBitmap;
+    private ContentLoadingProgressBar bar;
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -70,20 +68,26 @@ public class OperateBmpFragment extends Fragment {
             }
         }
     };
+    private boolean isBT1Pressed;
+
+    public OperateBmpFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        filePath=getContext().getCacheDir();
+        filePath = getContext().getCacheDir();
         //读取原始图片
         new Thread() {
             @Override
             public void run() {
                 try {
                     InputStream in = BitmapActivity.class.getResourceAsStream("/res/raw/sample.png");
-                    srcFileSize = in.available();
-                    byte[] bmpArray = toByteArray(in);
-                    srcBmp = BitmapFactory.decodeByteArray(bmpArray, 0, srcFileSize);
+                    if (in != null) {
+                        srcFileSize = in.available();
+                        byte[] bmpArray = toByteArray(in);
+                        srcBmp = BitmapFactory.decodeByteArray(bmpArray, 0, srcFileSize);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -99,7 +103,7 @@ public class OperateBmpFragment extends Fragment {
         Button bt1 = view.findViewById(R.id.bt1);
         Button bt2 = view.findViewById(R.id.bt2);
         Button bt3 = view.findViewById(R.id.bt3);
-        bar = (ContentLoadingProgressBar) view.findViewById(R.id.pbar);
+        bar = view.findViewById(R.id.pbar);
 
         bt1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +130,7 @@ public class OperateBmpFragment extends Fragment {
         nestedScrollView = view.findViewById(R.id.sr);
         return view;
     }
+
     public void onBtnClick(View btn) {
         PopupMenu popup = new PopupMenu(getActivity(), btn);
         switch (btn.getId()) {
@@ -171,8 +176,8 @@ public class OperateBmpFragment extends Fragment {
                     });
 
                     //将上一个 Fragment(CreatBmpFragment)中的视图（当前完全不可见）传入后截图
-                    View view=((BitmapActivity) getActivity()).getFragment1View();
-                    Bitmap bmp = view2Bitmap3(view, view.getWidth(),view.getHeight());
+                    View view = ((BitmapActivity) getActivity()).getFragment1View();
+                    Bitmap bmp = view2Bitmap3(view, view.getWidth(), view.getHeight());
                     writeBitmapToFile(filePath + "/" + "view3.jpg", bmp);
                 }
                 break;
@@ -200,7 +205,7 @@ public class OperateBmpFragment extends Fragment {
                                         new Thread() {
                                             @Override
                                             public void run() {
-                                                dstBitmap = compressQuality(srcBmp);
+                                                dstBitmap = compressQuality(srcBmp, 20);
                                                 mHandler.sendEmptyMessage(0xA1);
                                             }
                                         }.start();
@@ -308,56 +313,16 @@ public class OperateBmpFragment extends Fragment {
         return length;
     }
 
-    private Bitmap compressQuality(Bitmap bitmap) {
-        Bitmap nBitmap = null;
-        ByteArrayOutputStream baos = null;
-        FileOutputStream fos = null;
-        BufferedOutputStream bos = null;
-        if (bitmap != null) {
+    private Bitmap compressQuality(Bitmap bitmap, int quality) {
 
-            try {
-                Log.i("TAG", "compressQuality: " + bitmap.getWidth() + "---" + bitmap.getHeight() + "----" + bitmap.getConfig());
-                try {
-                    File desFile = new File(getContext().getCacheDir() + "/sample.jpg");
-                    fos = new FileOutputStream(desFile);
-                    baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-                    byte[] bytes = baos.toByteArray();
-                    nBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    baos.writeTo(fos);    //ByteArrayOutputStream --> FileOutputStream
-                    baos.flush();
-                    baos.close();
-                    dstFileSize = (int) desFile.length();
-                    Log.i("TAG", "desfile length: " + dstFileSize);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return nBitmap;
-            } catch (OutOfMemoryError e) {
-            } finally {
-                try {
-
-                    if (baos != null) {
-                        baos.close();
-
-                    }
-                    fos.close();
-//                  bos.close();
-                } catch (IOException e) {
-                }
-            }
-        }
-        return null;
+        return codec(bitmap, Bitmap.CompressFormat.JPEG, quality, null);
     }
+
 
     private Bitmap compressSampling(Bitmap bitmap) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 2;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] bytes = baos.toByteArray();
-        Bitmap nBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
-        return nBitmap;
+        return codec(bitmap, Bitmap.CompressFormat.PNG, 0, options);
     }
 
     private Bitmap compressMatrix(Bitmap bitmap, float xs, float ys) {
@@ -365,26 +330,27 @@ public class OperateBmpFragment extends Fragment {
         if (xs > 1) xs = 1.0f;
         if (ys > 1) ys = 1.0f;
         matrix.setScale(xs, ys);
-        Bitmap nBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-        return nBitmap;
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
     private Bitmap compressRGB565(Bitmap bitmap) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.RGB_565;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] bytes = baos.toByteArray();
-        Bitmap nBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
-        return nBitmap;
+        return codec(bitmap, Bitmap.CompressFormat.PNG, 0, options);
     }
 
     private Bitmap compressScaleBitmap(Bitmap bitmap, int width, int height) {
-        Bitmap nBitmap = Bitmap.createScaledBitmap(bitmap, width, height, true);
-        return nBitmap;
+        return Bitmap.createScaledBitmap(bitmap, width, height, true);
     }
 
+    private Bitmap codec(Bitmap src, Bitmap.CompressFormat format,
+                         int quality, BitmapFactory.Options opts) {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        src.compress(format, quality, os);
 
+        byte[] array = os.toByteArray();
+        return BitmapFactory.decodeByteArray(array, 0, array.length, opts);
+    }
 
     public int getBitmapSize(Bitmap bitmap) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {    //API 19
@@ -401,7 +367,7 @@ public class OperateBmpFragment extends Fragment {
     private byte[] toByteArray(InputStream input) throws IOException {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         byte[] buffer = new byte[4096];
-        int n = 0;
+        int n ;
         while (-1 != (n = input.read(buffer))) {
             output.write(buffer, 0, n);
         }
@@ -413,12 +379,8 @@ public class OperateBmpFragment extends Fragment {
         view.setDrawingCacheEnabled(true);
         view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         view.setDrawingCacheBackgroundColor(Color.WHITE);
-
         view.buildDrawingCache();
-        Bitmap bitmap = view.getDrawingCache();
-//        view.destroyDrawingCache();
-//        view.setDrawingCacheEnabled(false);
-        return bitmap;
+        return view.getDrawingCache();
     }
 
     //将没有在屏幕上显示完全的view转成图片

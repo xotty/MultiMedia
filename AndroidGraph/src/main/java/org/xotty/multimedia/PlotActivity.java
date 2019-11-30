@@ -26,12 +26,12 @@ import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.RegionIterator;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class PlotActivity extends AppCompatActivity {
 
@@ -205,13 +205,43 @@ public class PlotActivity extends AppCompatActivity {
     }
 
     public class CircleView extends View {
-
+        private static final float SWEEP_INC = 2;
+        private static final float START_INC = 15;
+        private Paint[] mPaints;
+        private boolean[] mUseCenters;
+        private float mStart;
+        private float mSweep;
+        private int mBigIndex;
 
         public CircleView(Context context) {
             super(context);
+
+            mPaints = new Paint[4];
+            mUseCenters = new boolean[4];
+
+            mPaints[0] = new Paint();
+            mPaints[0].setAntiAlias(true);
+            mPaints[0].setStyle(Paint.Style.FILL);
+            mPaints[0].setColor(0x88FF0000);
+            mUseCenters[0] = false;
+
+            mPaints[1] = new Paint(mPaints[0]);
+            mPaints[1].setColor(0x8800FF00);
+            mUseCenters[1] = true;
+
+            mPaints[2] = new Paint(mPaints[0]);
+            mPaints[2].setStyle(Paint.Style.STROKE);
+            mPaints[2].setStrokeWidth(4);
+            mPaints[2].setColor(0x880000FF);
+            mUseCenters[2] = false;
+
+            mPaints[3] = new Paint(mPaints[2]);
+            mPaints[3].setColor(0x88888888);
+            mUseCenters[3] = true;
+
         }
 
-        //重写OnDraw（）函数，在每次重绘时自主实现绘图
+        //重写OnDraw()函数，在每次重绘时自主实现绘图
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
@@ -236,7 +266,23 @@ public class PlotActivity extends AppCompatActivity {
             canvas.drawArc(rect2, 0, 130, true, paint);
 
             RectF rect3 = new RectF(800, 50, 1000, 200);
+            paint.setStyle(Paint.Style.STROKE);
             canvas.drawArc(rect3, 0, 130, false, paint);
+
+            //来自Google的APIDemo
+            canvas.drawArc(1100, 30, 1350, 270, mStart, mSweep, mUseCenters[mBigIndex],
+                    mPaints[mBigIndex]);
+
+            mSweep += SWEEP_INC;
+            if (mSweep > 360) {
+                mSweep -= 360;
+                mStart += START_INC;
+                if (mStart >= 360) {
+                    mStart -= 360;
+                }
+                mBigIndex = (mBigIndex + 1) % mPaints.length;
+            }
+            invalidate();
         }
     }
 

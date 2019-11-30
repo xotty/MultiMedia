@@ -1,19 +1,19 @@
 /**
  * Bitmap图片像素类型Bitmap.Config包括：ALPHA_8、RGB_565、ARGB_4444、ARGB_8888四种
- * Bitmap图片创建分两大类：Bitmap.createBitmap()和BitmapFactory.decodeXXX()
  * Bitmap压缩输出格式有三种：Bitmap.CompressFormat.JPEG、Bitmap.CompressFormat.PNG、Bitmap.CompressFormat.WEBP
  */
 package org.xotty.multimedia;
 
 import android.os.Bundle;
-import com.google.android.material.tabs.TabLayout;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;

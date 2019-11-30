@@ -4,8 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class BitmapDrawActivity extends AppCompatActivity {
     private static final int WIDTH = 960;
@@ -21,23 +22,25 @@ public class BitmapDrawActivity extends AppCompatActivity {
         private Bitmap myBitmap;
         private float[] mPts;
 
-        @Override
-        protected void onDraw(Canvas canvas) {
-            super.onDraw(canvas);
-            canvas.drawBitmap(myBitmap, 0, 0, null);
-        }
 
         public MyBitmapView(Context context) {
             super(context);
             mPts = GraphUtil.buildPoints();
             myBitmap = Bitmap.createBitmap(WIDTH, HEIGHT, Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(myBitmap);
+            Canvas mCanvas = new Canvas(myBitmap);
             /*等效替代
             Canvas  canvas = new Canvas();
             canvas.setBitmap(myBitmap);*/
 
-            //此时生成Bitmap的内容
-            GraphUtil.drawGraph(canvas, mPts);
+            //生成Bitmap
+            GraphUtil.drawGraph(mCanvas, mPts);
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+            //绘制Bitmap
+            canvas.drawBitmap(myBitmap, 0, 0, null);
         }
     }
 }

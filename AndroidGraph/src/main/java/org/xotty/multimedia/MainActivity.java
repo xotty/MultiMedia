@@ -3,7 +3,6 @@ package org.xotty.multimedia;
 import android.app.LauncherActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +12,12 @@ import android.widget.TextView;
 public class MainActivity extends LauncherActivity {
 
     //定义要跳转的各个Activity的名称
-    String[] names = {"BitmapDraw Demo", "DrawableDraw Demo", "ViewDraw Demo", "SurfaceView Demo",
+    String[] names = {"Density","BitmapDraw Demo", "DrawableDraw Demo", "ViewDraw Demo", "SurfaceView Demo",
             "CanvasPlot Demo", "CanvasTextDraw Demo", "CanvasTransform Demo", "Bitmap Demo", "Paint Demo",
     };
 
     //定义各个Activity对应的实现类
-    Class<?>[] clazzs = {BitmapDrawActivity.class, DrawableDrawActivity.class, ViewDrawActivity.class, SurfaceViewActivity.class,
+    Class<?>[] clazzs = {DensityActivity.class,BitmapDrawActivity.class, DrawableDrawActivity.class, ViewDrawActivity.class, SurfaceViewActivity.class,
             PlotActivity.class, TextDrawActivity.class, CanvasTransformActivity.class, BitmapActivity.class, PaintActivity.class,};
 
 
@@ -57,19 +56,20 @@ public class MainActivity extends LauncherActivity {
 
                 TextView text = (TextView) convertView.findViewById(R.id.tv);
                 text.setText(names[position]);
-                if (position <= 3)
+                if (position <= 0)
                     text.setBackgroundResource(android.R.color.darker_gray);
-                else if (position <= 6)
+                else if (position <= 4)
                     text.setBackgroundResource(android.R.color.holo_orange_light);
                 else if (position <= 7)
                     text.setBackgroundResource(android.R.color.holo_green_light);
-                else
+                else if (position <= 8)
                     text.setBackgroundResource(android.R.color.holo_blue_light);
+                else
+                    text.setBackgroundResource(android.R.color.holo_purple);
 
                 return convertView;
             }
         };
-        Log.i("TAG", "onCreate: 1");
         setListAdapter(adapter);
     }
 
@@ -79,19 +79,3 @@ public class MainActivity extends LauncherActivity {
         return new Intent(MainActivity.this, clazzs[position]);
     }
 }
-
-
-//package org.xotty.multimedia;
-//import android.os.Bundle;
-//
-//import androidx.appcompat.app.AppCompatActivity;
-//
-//
-//public class MainActivity extends AppCompatActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//    }
-//}

@@ -23,8 +23,8 @@ android {
 
 
     defaultConfig {
-        applicationId "org.xotty.androidaudio"
-        minSdkVersion 21
+        applicationId "org.xotty.multimedia"
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -40,6 +40,11 @@ android {
         }
     }
 
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res', 'src/main/res/drawable-hdpi', 'src/main/res/drawale-xxxhdpi', 'src/main/res/drawable-xxhdpi', 'src/main/res/drawable-xhdpi', 'src/main/res/drawable-mdpi', 'src/main/res/drawable-ldpi', 'src/main/res/drawable-nodpi', 'src/main/res/drawable-anydpi']
+        }
+    }
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

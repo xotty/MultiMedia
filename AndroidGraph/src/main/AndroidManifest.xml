@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.xotty.multimedia">
-<!--    <uses-permission android:name="android.permission.INTERNET" />-->
-<!--    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>-->
-<!--    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
-<!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>-->
-
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.xotty.multimedia"
+    tools:ignore="GoogleAppIndexingWarning">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:fullBackupContent="true"
+        android:allowBackup="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".BitmapActivity"
             android:label="@string/title_activity_bitmap"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".CanvasTransformActivity"
             android:label="@string/title_activity_canvas_transform"
@@ -23,6 +26,9 @@
         <activity
             android:name=".ViewDrawActivity"
             android:label="@string/title_activity_view_draw" />
+        <activity android:name="DensityActivity"
+            android:label="Density"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".BitmapDrawActivity"
             android:label="@string/title_activity_bitmap_draw" />

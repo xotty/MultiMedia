@@ -1,3 +1,11 @@
+/**
+ * 构建生成Bitmap的方法：
+ * 1、createBitmap             常用5种，见M1
+ * 2、BitmapFactory.decodeXXX  5种(openRawResource) 见M3和M4
+ * 3、Drawable转换              2种, 见M2和M5
+ * 4、Canvas mCanvas = new Canvas(myBitmap);
+ *    mCanvas.drawXXX          见BitmapDrawActivity
+ */
 package org.xotty.multimedia;
 
 import android.content.Context;
@@ -13,8 +21,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import androidx.fragment.app.Fragment;
-import androidx.core.widget.NestedScrollView;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -24,11 +30,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,8 +78,8 @@ public class CreateBmpFragment extends Fragment {
 
         //在工作目录中准备位图文件，以便后续程序读取使用
         try {
-        File file=new File(getContext().getCacheDir()+"/scene.jpg");
-        InputStream in = getResources().openRawResource(R.raw.scene);
+            File file = new File(getContext().getCacheDir() + "/scene.jpg");
+            InputStream in = getResources().openRawResource(R.raw.scene);
             OutputStream out = new FileOutputStream(file);
             try {
                 byte[] buf = new byte[1024];
@@ -79,15 +87,13 @@ public class CreateBmpFragment extends Fragment {
                 while ((len = in.read(buf)) > 0) {
                     out.write(buf, 0, len);
                 }
-            }
-                catch(IOException e){
-                    e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             } finally {
                 out.close();
             }
             in.close();
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -108,12 +114,12 @@ public class CreateBmpFragment extends Fragment {
         return nestedScrollView;
     }
 
-   @Override
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         View fragmentView = root;
-        ((BitmapActivity)getActivity()).setFragment1View(fragmentView);
-   }
+        ((BitmapActivity) getActivity()).setFragment1View(fragmentView);
+    }
 
     class BitmapCreateView extends View {
 
@@ -143,7 +149,8 @@ public class CreateBmpFragment extends Fragment {
             /*1)createBitmap(int width, int height, Config config)　
               2)createBitmap(Bitmap src)　
               3)createBitmap(Bitmap src, int x, int y, int width, int height)　
-              4)createScaledBitmap(Bitmap src, int dstWidth, int dstHeight, boolean filter)
+              4)createBitmap(int[] colors,int width, int height, Config config)
+              5)createScaledBitmap(Bitmap src, int dstWidth, int dstHeight, boolean filter)
             */
             //Drawable --> Bitmap
             canvas.drawText("1", xStart + w / 2, yStart - 10, paint);
@@ -167,7 +174,7 @@ public class CreateBmpFragment extends Fragment {
             int height = bmp.getHeight();
             int[] pixels = new int[width * height];
             bmp.getPixels(pixels, 0, width, 0, 0, width, height);
-            Bitmap bitmap3 = Bitmap.createBitmap(pixels, width, h, Bitmap.Config.ARGB_8888);
+            Bitmap bitmap3 = Bitmap.createBitmap(pixels, width, h, Bitmap.Config.ARGB_4444);
             canvas.drawBitmap(bitmap3, xStart + 2 * w + 100, yStart, null);
             bitmapRecycle(bitmap3);
 
@@ -279,7 +286,7 @@ public class CreateBmpFragment extends Fragment {
             BitmapFactory.decodeResource(resources, resourcesId, options);
             options = setOptions(options, width, height);
 
-            //Drawable --> Bitmap
+            //Resoureces --> Bitmap
             Bitmap bitmap = BitmapFactory.decodeResource(resources, resourcesId, options);
             if (bitmap == null) bitmap = defaultBitmap;
             return bitmap;
@@ -294,7 +301,7 @@ public class CreateBmpFragment extends Fragment {
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeResource(resources, resourcesId, options);
                 options = setOptions(options, width, height);
-                //Drawable --> Bitmap
+                //InputStream --> Bitmap
                 bitmap = BitmapFactory.decodeStream(ins, null, options);
                 ins.close();
             } catch (IOException e) {
@@ -358,7 +365,6 @@ public class CreateBmpFragment extends Fragment {
                 bitmap = defaultBitmap;
                 Log.i("TAG", "readBitmapFromResource2: null" + defaultBitmap);
             }
-            ;
 
             return bitmap;
         }
@@ -375,8 +381,6 @@ public class CreateBmpFragment extends Fragment {
                 FileDescriptor fd = fis.getFD();
                 bitmap = BitmapFactory.decodeFileDescriptor(fd, null, options);
                 fis.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -443,8 +447,8 @@ public class CreateBmpFragment extends Fragment {
             int inSampleSize = 1;
             if (srcHeight > reqHeight || srcWidth > reqWidth) {
                 // 计算出实际宽高和目标宽高的比率
-                final int heightRatio = Math.round((float) srcHeight / (float) reqHeight);
-                final int widthRatio = Math.round((float) srcWidth / (float) reqWidth);
+                final int heightRatio = Math.round(srcHeight / (float) reqHeight);
+                final int widthRatio = Math.round(srcWidth / (float) reqWidth);
                 inSampleSize = heightRatio > widthRatio ? heightRatio : widthRatio;
             }
             BitmapFactory.Options mOptions = new BitmapFactory.Options();

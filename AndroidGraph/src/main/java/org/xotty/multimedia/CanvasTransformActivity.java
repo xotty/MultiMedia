@@ -1,38 +1,6 @@
-/*两个基本点：
+/**Canvas变换的两个基本点：
 1）所有的变换操作(旋转、平移、缩放、错切)默认都是以坐标原点为基准点的。
 2）之前操作的坐标系状态会保留，并且影响到后续状态。
-
-若M是原始状态矩阵，A是变换矩阵，M'是变换后的结果矩阵，则：
-pre  :  M‘ = M*A，右乘
-post :  M’ = A*M，左乘
-
-通常的变换执行程序：
-Matrix matrix = new Matrix();
-各种变换操作：平移、旋转，缩放，错切......
-matrix.postTranslate(pivotX,pivotY);
-matrix.preTranslate(-pivotX, -pivotY)
-
-
-boolean  clipRect(Rect rect)
-boolean  clipRect(RectF rect)
-boolean  clipRect(int left, int top, int right, int bottom)
-boolean  clipRect(float left, float top, float right, float bottom)
-
-boolean  clipOutRect(Rect rect)
-boolean  clipOutRect(RectF rect)
-boolean  clipOutRect(int left, int top, int right, int bottom)
-boolean  clipOutRect(float left, float top, float right, float bottom)
-
-boolean  clipRect(Rect rect, Region.Op op)
-boolean  clipRect(RectF rect, Region.Op op)
-boolean  clipRect(float left, float top, float right, float bottom, Region.Op op)
-
-boolean  clipPath(Path path)
-boolean  clipOutPath(Path path)
-
-boolean  clipPath(Path path, Region.Op op)
-
-
 */
 
 package org.xotty.multimedia;
@@ -51,16 +19,16 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 public class CanvasTransformActivity extends AppCompatActivity {
+    int titleHeight = 70;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +37,6 @@ public class CanvasTransformActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         TranslateView tv = new TranslateView(this);
         LinearLayout root = (LinearLayout) findViewById(R.id.rt);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -91,14 +51,14 @@ public class CanvasTransformActivity extends AppCompatActivity {
 
                 LinearLayout.LayoutParams.MATCH_PARENT,
 
-                250);
+                380);
         ClipView cv = new ClipView(this);
         root.addView(cv, params);
         params = new LinearLayout.LayoutParams(
 
                 LinearLayout.LayoutParams.MATCH_PARENT,
 
-                500);
+                550);
         MatrixView mv = new MatrixView(this);
         root.addView(mv, params);
 
@@ -106,13 +66,25 @@ public class CanvasTransformActivity extends AppCompatActivity {
 
                 LinearLayout.LayoutParams.MATCH_PARENT,
 
-                500);
+                550);
         LayerView lv = new LayerView(this);
         root.addView(lv, params);
+        params = new LinearLayout.LayoutParams(
 
-        SampleView sv=new SampleView(this);
+                LinearLayout.LayoutParams.MATCH_PARENT,
+
+                700);
+        SampleView sv = new SampleView(this);
         root.addView(sv, params);
 
+    }
+
+    private Paint generatePaint(int color, Paint.Style style, int width) {
+        Paint paint = new Paint();
+        paint.setColor(color);
+        paint.setStyle(style);
+        paint.setStrokeWidth(width);
+        return paint;
     }
 
     public class TranslateView extends View {
@@ -126,23 +98,27 @@ public class CanvasTransformActivity extends AppCompatActivity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
+            //设置画布背景颜色
+            canvas.drawColor(Color.WHITE);
 
+            Paint paint = generatePaint(Color.RED, Paint.Style.FILL, 5);
+            paint.setTextSize(50);
+            canvas.drawText("1.Translate", 10, titleHeight, paint);
+            canvas.save();
             //设置画笔基本属性
             Paint paint_green = generatePaint(Color.GREEN, Paint.Style.STROKE, 5);
             Paint paint_red = generatePaint(Color.RED, Paint.Style.STROKE, 5);
-
-            //设置画布背景颜色
-            canvas.drawColor(Color.WHITE);
+            canvas.restore();
             canvas.save();
 
             //平移Translate
-            RectF rect1 = new RectF(50, 50, 400, 200);
+            RectF rect1 = new RectF(50, 50 + titleHeight, 400, 200 + titleHeight);
             canvas.drawRect(rect1, paint_red);
             canvas.translate(100, 100);//平移到（100，100）
             canvas.drawRect(rect1, paint_green);
 
             //错切Skew
-            Rect rect2 = new Rect(550, 50, 900, 200);
+            Rect rect2 = new Rect(550, 50 + titleHeight, 900, 200 + titleHeight);
             canvas.drawRect(rect2, paint_red);
             canvas.skew(0.533f, 0);  //X轴倾斜60度，Y轴不变
             canvas.drawRect(rect2, paint_green);//画出旋转后的矩形
@@ -150,7 +126,7 @@ public class CanvasTransformActivity extends AppCompatActivity {
             //旋转Rotate
             canvas.restore();
             canvas.save();
-            Rect rect3 = new Rect(50, 600, 400, 750);
+            Rect rect3 = new Rect(50, 500 + titleHeight, 400, 650 + titleHeight);
             canvas.drawRect(rect3, paint_red);
             canvas.rotate(-15);//逆时针旋转画布15度，（0,0） 为旋转中心
             // canvas.rotate(-15, 50, 600); // （px，py） 为旋转中心
@@ -159,7 +135,7 @@ public class CanvasTransformActivity extends AppCompatActivity {
             //缩放Scale
             canvas.restore();
             canvas.save();
-            Rect rect4 = new Rect(650, 600, 1000, 750);
+            Rect rect4 = new Rect(650, 500 + titleHeight, 1000, 650 + titleHeight);
             canvas.drawRect(rect4, paint_red);
             canvas.scale(1.1f, 0.9f);//x放大到1.1倍，y缩小到0.9倍
             canvas.drawRect(rect4, paint_green);
@@ -168,14 +144,25 @@ public class CanvasTransformActivity extends AppCompatActivity {
 
     }
 
-    private Paint generatePaint(int color, Paint.Style style, int width) {
-        Paint paint = new Paint();
-        paint.setColor(color);
-        paint.setStyle(style);
-        paint.setStrokeWidth(width);
-        return paint;
-    }
+    /*API28以上Region.Op仅支持INTERSECT和DIFFERENCE
+    boolean  clipRect(Rect rect)
+    boolean  clipRect(RectF rect)
+    boolean  clipRect(int left, int top, int right, int bottom)
+    boolean  clipRect(float left, float top, float right, float bottom)
 
+    boolean  clipOutRect(Rect rect)
+    boolean  clipOutRect(RectF rect)
+    boolean  clipOutRect(int left, int top, int right, int bottom)
+    boolean  clipOutRect(float left, float top, float right, float bottom)
+
+    boolean  clipRect(Rect rect, Region.Op op)
+    boolean  clipRect(RectF rect, Region.Op op)
+    boolean  clipRect(float left, float top, float right, float bottom, Region.Op op)
+
+    boolean  clipPath(Path path)
+    boolean  clipOutPath(Path path)
+    boolean  clipPath(Path path, Region.Op op)
+    */
     public class ClipView extends View {
 
 
@@ -188,37 +175,72 @@ public class CanvasTransformActivity extends AppCompatActivity {
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
 
-            //设置画布背景颜色
+            //设置画布背景颜色和标题
             canvas.drawColor(Color.LTGRAY);
             canvas.save();
+            Paint paint = generatePaint(Color.RED, Paint.Style.FILL, 5);
+            paint.setTextSize(50);
+            canvas.drawText("2.Clip", 10, titleHeight, paint);
 
-            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.timg);
-            canvas.drawBitmap(bitmap, 0, 0, null);
-
-            canvas.clipRect(300, 50, 500, 150);
-            canvas.drawBitmap(bitmap, 300, 0, null);
-
+            //原图
             canvas.restore();
             canvas.save();
-
-            Path path = new Path();
-            path.addCircle(550 + bitmap.getWidth() / 2, bitmap.getWidth() / 2, bitmap.getWidth() / 2, Path.Direction.CW);
-            canvas.clipPath(path);
-            canvas.drawBitmap(bitmap, 550, 0, null);
-
+            canvas.translate(10, titleHeight+20);
+            Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.timg);
+            canvas.drawBitmap(bitmap, 0, 0, null);
             canvas.restore();
 
+            //单矩形裁剪，相当于DIFFERENCE
+            canvas.save();
+            canvas.translate(350, titleHeight+20);
+            canvas.clipOutRect(0, 50, 200, 150 );
+            canvas.drawBitmap(bitmap, 0, 0, null);
+
+            //单圆形裁剪
+            canvas.restore();
+            canvas.save();
+            canvas.translate(630, titleHeight+20);
+            Path path = new Path();
+            path.addCircle( bitmap.getWidth() / 2, (bitmap.getWidth() / 2) , bitmap.getWidth() / 2, Path.Direction.CW);
+            canvas.clipPath(path);
+            canvas.drawBitmap(bitmap, 0, 0, null);
+
+            //两个圆相交部分INTERSECT
+            canvas.restore();
+            canvas.save();
+            canvas.translate(980, titleHeight+20);
             Path path1 = new Path();
             Path path2 = new Path();
-            path1.addCircle(900, bitmap.getWidth() / 2, 120, Path.Direction.CW);
-            path2.addCircle(1000, bitmap.getWidth() / 2, 120, Path.Direction.CW);
+            path1.addCircle(0, bitmap.getHeight() / 2 , bitmap.getWidth() / 2, Path.Direction.CW);
+            path2.addCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2 , bitmap.getWidth() / 2, Path.Direction.CW);
             canvas.clipPath(path1);
             canvas.clipPath(path2, Region.Op.INTERSECT);
-            canvas.drawBitmap(bitmap, 850, 0, null);
+            /*可替换
+            canvas.clipPath(path2);*/
+            canvas.drawBitmap(bitmap, 0, 0, null);
+
+            //两个矩形相减部分DIFFERENCE
+            canvas.restore();
+            canvas.save();
+            canvas.translate(1200, titleHeight+20);
+            canvas.clipRect(0, 0, bitmap.getWidth()*2 / 3, bitmap.getHeight()*2/3);
+            canvas.clipRect(bitmap.getWidth() / 3, bitmap.getHeight()/3, bitmap.getWidth(), bitmap.getHeight(), Region.Op.DIFFERENCE);
+            /*可替换
+            canvas.clipOutRect(bitmap.getWidth() / 3, bitmap.getHeight()/3, bitmap.getWidth(), bitmap.getHeight());*/
+            canvas.drawBitmap(bitmap, 0, 0, null);
         }
     }
 
-    /*初始化
+    /*若M是原始状态矩阵，A是变换矩阵，M'是变换后的结果矩阵，则：
+        pre  :  M‘ = M*A，右乘
+        post :  M’ = A*M，左乘
+
+        通常的变换执行程序：
+        Matrix matrix = new Matrix();
+        各种变换操作：平移、旋转，缩放，错切......
+        matrix.postTranslate(pivotX,pivotY);
+        matrix.preTranslate(-pivotX, -pivotY)
+    初始化
      1.Matrix ()
      2.void reset ()
 
@@ -247,8 +269,6 @@ public class CanvasTransformActivity extends AppCompatActivity {
      2.mapPoints (float[] dst, float[] src)
      3.mapPoints (float[] dst, int dstIndex,float[] src, int srcIndex, int pointCount)
      */
-
-
     public class MatrixView extends View {
 
         private static final String TAG = "TAG";
@@ -264,13 +284,19 @@ public class CanvasTransformActivity extends AppCompatActivity {
 
             //设置画布背景颜色
             canvas.drawColor(Color.WHITE);
+            Paint paint = generatePaint(Color.RED, Paint.Style.FILL, 5);
+            paint.setTextSize(50);
+            canvas.drawText("3.Matrix", 10, titleHeight, paint);
+            canvas.save();
+
+            canvas.restore();
             Paint paint_red = generatePaint(Color.RED, Paint.Style.STROKE, 5);
 
 
             Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.scene);
             Matrix matrix = new Matrix();
             matrix.setTranslate(50, 200);
-            matrix.preRotate(15, bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+            matrix.preRotate(15, bitmap.getWidth() / 2, bitmap.getHeight() / 2 + titleHeight);
             matrix.preScale(0.5f, 0.5f);
             canvas.drawBitmap(bitmap, matrix, null);
 
@@ -278,7 +304,7 @@ public class CanvasTransformActivity extends AppCompatActivity {
             matrix.setTranslate(600, 250);
             matrix.preRotate(-35);
             canvas.concat(matrix);  //canvas.setMatrix(matrix);
-            RectF rect1 = new RectF(0, 0, 400, 200);
+            RectF rect1 = new RectF(0, 0 + titleHeight, 400, 200 + titleHeight);
             canvas.drawRect(rect1, paint_red);
 
 
@@ -292,30 +318,6 @@ public class CanvasTransformActivity extends AppCompatActivity {
             Log.i(TAG, "M1=" + matrix.toString());
             matrix.postConcat(a);
             Log.i(TAG, "M2=" + matrix.toShortString());
-        }
-
-        private Bitmap  bitmapScale1(Bitmap bitmap,int w,int h){
-            int width = bitmap.getWidth();
-            int height = bitmap.getHeight();
-            Matrix matrix = new Matrix();
-            float scaleWidht = ((float)w / width);
-            float scaleHeight = ((float)h / height);
-            matrix.postScale(scaleWidht, scaleHeight);
-            Bitmap newbmp = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
-            return newbmp;
-        }
-
-        private  Bitmap  bitmapScale2(Context context , int id , int x , int y){
-            Bitmap map = BitmapFactory.decodeResource(context.getResources(), id);
-            map = Bitmap.createBitmap(map, x, y, 120, 120);
-            return map;
-        }
-
-        private Bitmap bitmapScale3(Bitmap bitmap, float scale) {
-            Matrix matrix = new Matrix();
-            matrix.postScale(scale, scale); // 长和宽放大缩小的比例
-            Bitmap resizeBmp = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-            return resizeBmp;
         }
     }
 
@@ -336,18 +338,21 @@ public class CanvasTransformActivity extends AppCompatActivity {
             mPaint.setAntiAlias(true);
             mPaint.setColor(Color.RED);
             canvas.drawColor(Color.LTGRAY);     //canvas是图层0，灰色
-            canvas.drawCircle(150, 150, 100, mPaint);
-            canvas.saveLayer(0, 0, 600, 300, mPaint, Canvas.ALL_SAVE_FLAG);//图层1
+            mPaint.setTextSize(50);
+            canvas.drawText("4.Layer", 10, titleHeight, mPaint);
+            canvas.save();
+            canvas.drawCircle(150, 20 + 150 + titleHeight, 100, mPaint);
+            canvas.saveLayer(0, 20 + titleHeight, 600, 300 + 20 + titleHeight, mPaint);//图层1
             /*可选形式
             canvas.saveLayerAlpha(0, 0, 600, 300, 0x50, Canvas.ALL_SAVE_FLAG);//图层1*/
 
             canvas.drawColor(Color.BLUE);//图层1，蓝色
-            canvas.drawCircle(300, 150, 100, mPaint);
+            canvas.drawCircle(300, 20 + 150 + titleHeight, 100, mPaint);
             canvas.restore();  //去掉图层1，否则图层2是基于图层1的
 
-            canvas.saveLayerAlpha(300, 0, 900, 400, 0x88, Canvas.ALL_SAVE_FLAG);//图层2
+            canvas.saveLayerAlpha(300, 20 + titleHeight, 900, 400 + 20 + titleHeight, 0x88);//图层2
             canvas.drawColor(Color.YELLOW);//图层2，黄色
-            canvas.drawCircle(600, 150, 100, mPaint);
+            canvas.drawCircle(600, 150 + 20 + titleHeight, 100, mPaint);
 
         }
     }
@@ -355,11 +360,11 @@ public class CanvasTransformActivity extends AppCompatActivity {
     public class SampleView extends View {
         private static final int HOUR_LINE_HEIGHT = 20;
         private static final int MINUTE_LINE_HEIGHT = 10;
+        private static final String TAG = "TAG";
         private Paint mCirclePaint, mLinePaint;
         private DrawFilter mDrawFilter;
         //圆心（表盘中心）
         private int mCenterX, mCenterY, mCenterRadius;
-
         // 圆环线宽度
         private int mCircleLineWidth;
         // 直线刻度线宽度
@@ -370,12 +375,10 @@ public class CanvasTransformActivity extends AppCompatActivity {
         private int mMinuteLineHeight;
         // 刻度线的左、上位置
         private int mLineLeft, mLineTop;
-
         // 刻度线的下边位置
         private int mLineBottom;
         // 用于控制刻度线位置
         private int mFixLineHeight;
-        private static final String TAG = "TAG";
 
         public SampleView(Context context) {
             super(context);
@@ -384,6 +387,14 @@ public class CanvasTransformActivity extends AppCompatActivity {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
+            Paint mPaint = new Paint();
+            mPaint.setStyle(Paint.Style.FILL);
+            mPaint.setAntiAlias(true);
+            mPaint.setColor(Color.RED);
+            canvas.drawColor(Color.WHITE);     //canvas是图层0，灰色
+            mPaint.setTextSize(50);
+            canvas.drawText("5.Sample", 10, titleHeight, mPaint);
+
             //画正方形
             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
             paint.setStyle(Paint.Style.STROKE);
@@ -397,7 +408,7 @@ public class CanvasTransformActivity extends AppCompatActivity {
             int squareCount = (r - l) / space;
             float px = l + (r - l) / 2;
             float py = t + (b - t) / 2;
-            canvas.translate(50,50);
+            canvas.translate(50, 50 + titleHeight);
             for (int i = 0; i < squareCount; i++) {
                 // 保存画布
                 canvas.save();
@@ -431,7 +442,7 @@ public class CanvasTransformActivity extends AppCompatActivity {
                     getResources().getDisplayMetrics());
 
             mCenterX = 750;
-            mCenterY = 200;
+            mCenterY = 200 + titleHeight;
             mCenterRadius = Math.min(mCenterX, mCenterY) - mCircleLineWidth / 2;
 
             mLineLeft = mCenterX - mMinuteLineWidth / 2;

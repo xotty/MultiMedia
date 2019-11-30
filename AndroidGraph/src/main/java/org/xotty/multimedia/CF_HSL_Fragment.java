@@ -2,6 +2,7 @@
  * 色相（Hue）：setRotate
  * 饱和度（Saturation）：setSaturation
  * 亮度（Lightness）：setScale
+ * 对比度（Contrast）设置ColorMatrix
  * 效果叠加：postConcat
  */
 package org.xotty.multimedia;
@@ -23,14 +24,15 @@ public class CF_HSL_Fragment extends Fragment implements SeekBar.OnSeekBarChange
     private SeekBar seekBarHue;
     private SeekBar seekBarSaturation;
     private SeekBar seekBarLightness;
+    private SeekBar seekBarContrast;
     private ColorMatrix colorMatrix = new ColorMatrix();
     private ColorMatrix mHueMatrix = new ColorMatrix();
     private ColorMatrix mSaturationMatrix = new ColorMatrix();
     private ColorMatrix mLightnessMatrix = new ColorMatrix();
+    private ColorMatrix mContrastMatrix = new ColorMatrix();
 
     public CF_HSL_Fragment() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,10 +43,12 @@ public class CF_HSL_Fragment extends Fragment implements SeekBar.OnSeekBarChange
         seekBarHue = (SeekBar) rootView.findViewById(R.id.bar_hue);
         seekBarSaturation = (SeekBar) rootView.findViewById(R.id.bar_saturation);
         seekBarLightness = (SeekBar) rootView.findViewById(R.id.bar_lightness);
+        seekBarContrast = (SeekBar) rootView.findViewById(R.id.bar_contrast);
 
         seekBarHue.setOnSeekBarChangeListener(this);
         seekBarSaturation.setOnSeekBarChangeListener(this);
         seekBarLightness.setOnSeekBarChangeListener(this);
+        seekBarContrast.setOnSeekBarChangeListener(this);
         return rootView;
     }
 
@@ -55,6 +59,7 @@ public class CF_HSL_Fragment extends Fragment implements SeekBar.OnSeekBarChange
         float mHueValue = (seekBarHue.getProgress() - 128f) * 1.0f / 128f * 180;
         float mSaturationValue = seekBarSaturation.getProgress() / 128f;
         float mLightnessValue = seekBarLightness.getProgress() / 128f;
+        float mContrastValue = seekBarContrast.getProgress() / 128f-1.0f;
 
         //设置色相
         mHueMatrix.reset();
@@ -70,11 +75,17 @@ public class CF_HSL_Fragment extends Fragment implements SeekBar.OnSeekBarChange
         mLightnessMatrix.reset();
         mLightnessMatrix.setScale(mLightnessValue, mLightnessValue, mLightnessValue, 1);
 
-        // 效果叠加
+
+        //设置对比度
+        mContrastMatrix.reset();
+        setContrast(mContrastMatrix,mContrastValue);
+
+        //效果叠加
         colorMatrix.reset();
         colorMatrix.postConcat(mHueMatrix);
         colorMatrix.postConcat(mSaturationMatrix);
         colorMatrix.postConcat(mLightnessMatrix);
+        colorMatrix.postConcat(mContrastMatrix);
 
         imageView.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
     }
@@ -87,5 +98,16 @@ public class CF_HSL_Fragment extends Fragment implements SeekBar.OnSeekBarChange
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
 
+    }
+
+    //设置对比度
+    private  void setContrast(ColorMatrix cm, float contrast) {
+        float scale = contrast + 1.f;
+        float translate = (-.5f * scale + .5f) * 255.f;
+        cm.set(new float[] {
+                scale, 0, 0, 0, translate,
+                0, scale, 0, 0, translate,
+                0, 0, scale, 0, translate,
+                0, 0, 0, 1, 0 });
     }
 }

@@ -133,9 +133,6 @@ public class CF_Filter_Fragment extends Fragment {
         filterTags.add("");
 
         //filterColor作为SRC，imageView作为DST，进行混色
-
-
-
         filters.add(new PorterDuffColorFilter(filterColor, PorterDuff.Mode.ADD));
         filterTags.add("Mode.ADD");
         filters.add(new PorterDuffColorFilter(filterColor, PorterDuff.Mode.MULTIPLY));
